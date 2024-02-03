@@ -3,50 +3,62 @@
 #include <stdarg.h>
 
 /**
- * _printf - Printf function
- * @format: format.
- * Return: Printed chars.
+ * _printf - Custom printf function
+ * @format: format string.
+ * Return: Number of characters printed (excluding null byte).
  */
-
 int _printf(const char *format, ...)
 {
 	va_list args;
 	int enami = 0;
 
+	if (format == NULL)
+		return (-1);
+
 	va_start(args, format);
-	if (!format || (format[0] == '%' && !format[1]))
-		return (-1);
-	if (format[0] == '%' && format[1] == ' ' && !format[2])
-		return (-1);
-	while (*format != ' ')
+	while (*format) 
 	{
 		if (*format == '%')
 		{
 			format++;
-
 			switch (*format)
 			{
 				case 'c':
 					enami += putchar(va_arg(args, int));
 					break;
 				case 's':
-					enami += printf("%s", va_arg(args, char *));
-					break;
-				case '%':
-					enami += putchar('%');
-					break;
-				default:
-					enami += putchar('%');
-					enami += putchar(*format);
-					break;
+					{
+						char *str = va_arg(args, char *);
+						if (str == NULL) str = "(null)";
+						while (*str)
+						{
+							enami += putchar(*str++);
+						}
+						break;
+					}
 				case 'd':
 				case 'i':
 					{
 						int num = va_arg(args, int);
-						printf("%d", num);
-						enami++;
+						char numStr[12]; /* Enough for 32-bit int, including sign and null terminator */
+						sprintf(numStr, "%d", num);
+						char *p;
+						p = /* some value */;
+						p = numStr;
+						while (*p)
+						{
+							enami += putchar(*p++);
+						}
 						break;
 					}
+				case '%':
+					enami += putchar('%');
+					break;
+				default:
+					/* Print the percent and the unrecognized character */
+					enami += putchar('%');
+					enami += putchar(*format);
+					break;
 			}
 		}
 		else
