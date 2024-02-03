@@ -14,7 +14,9 @@ int _printf(const char *format, ...)
 	int enami = 0;
 
 	va_start(args, format);
-	if (format == NULL || (format[0] == '%' && format[1] == ' '))
+	if (!format || (format[0] == '%' && !format[1]))
+		return (-1);
+	if (format[0] == '%' && format[1] == ' ' && !format[2])
 		return (-1);
 	while (*format != ' ')
 	{
@@ -22,22 +24,22 @@ int _printf(const char *format, ...)
 		{
 			format++;
 
-				switch (*format)
-				{
-					case 'c':
-						enami += putchar(va_arg(args, int));
-						break;
-					case 's':
-						enami += printf("%s", va_arg(args, char *));
-						break;
-					case '%':
-						enami += putchar('%');
-						break;
-					default:
-						enami += putchar('%');
-						enami += putchar(*format);
-						break;
-				}
+			switch (*format)
+			{
+				case 'c':
+					enami += putchar(va_arg(args, int));
+					break;
+				case 's':
+					enami += printf("%s", va_arg(args, char *));
+					break;
+				case '%':
+					enami += putchar('%');
+					break;
+				default:
+					enami += putchar('%');
+					enami += putchar(*format);
+					break;
+			}
 		}
 		else
 		{
