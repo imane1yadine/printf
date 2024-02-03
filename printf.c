@@ -39,6 +39,14 @@ int _printf(const char *format, ...)
 					enami += putchar('%');
 					enami += putchar(*format);
 					break;
+				case 'd':
+				case 'i':
+					{
+						int num = va_arg(args, int);
+						printf("%d", num);
+						enami++;
+						break;
+					}
 			}
 		}
 		else
