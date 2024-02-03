@@ -40,14 +40,11 @@ int _printf(const char *format, ...)
 				case 'i':
 					{
 						int num = va_arg(args, int);
-						char numStr[12]; /* Enough for 32-bit int, including sign and null terminator */
+						char numStr[12];
 						sprintf(numStr, "%d", num);
-						char *p;
-						p = /* some value */;
-						p = numStr;
-						while (*p)
+						while (numStr)
 						{
-							enami += putchar(*p++);
+							enami += putchar(numStr++);
 						}
 						break;
 					}
